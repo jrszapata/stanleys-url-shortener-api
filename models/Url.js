@@ -16,6 +16,7 @@ Url.init({
     },
     link: {
         type: Sequelize.STRING,
+        unique: true,
         allowNull: false,
     }
 }, {
