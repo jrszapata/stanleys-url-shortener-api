@@ -4,11 +4,11 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
 
+//Load .env configuration into process.env object
 require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 
-//Load .env configuration into PROCESS.ENV
 
 var app = express();
 
