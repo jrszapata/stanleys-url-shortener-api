@@ -1,20 +1,27 @@
 const Url = require('../models/Url');
 const nanoid = require('nanoid');
 const {baseUrl} = require('../helpers');
+const request = require('request-promise-native');
+const cheerio = require('cheerio');
 
 /**
  * Create a new record for the url being shortened
  */
 exports.store = async (req, res) => {
     try {
-        const [url] = await Url.findOrCreate({ 
+        const [url, created] = await Url.findOrCreate({ 
             where: { link: req.body.link },
             defaults: { link: req.body.link, hash: nanoid(10) }
         });
+
+        url.title = await scrapeTitle(req.body.link);
+        url.save();
+
         const data = {
           generatedUrl: baseUrl(url.hash),
           ...url.toJSON()
         };
+
         res.json(data);
     } catch(e) {
         res.json({
@@ -68,3 +75,15 @@ exports.getTop = async (req, res, next) => {
         });
     }
 };
+
+
+
+/**
+ * Scrape the title from the provided webpage link
+ * @param {*} link 
+ */
+async function scrapeTitle(link) {
+    const html = await request.get(link);
+    const $ = cheerio.load(html);    
+    return $('title').text() || '';
+}

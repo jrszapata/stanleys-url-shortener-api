@@ -9,6 +9,10 @@ Url.init({
         primaryKey: true,
         autoIncrement: true,
     },
+    title: {
+        type: Sequelize.STRING,
+        allowNull: true,
+    },
     hash: {
         type: Sequelize.STRING,
         unique: true,
