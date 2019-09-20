@@ -29,8 +29,25 @@ exports.store = async (req, res) => {
  * Return the last created short urls
  */
 exports.getList = async (req, res, next) => {
+
+    const limit = parseInt(req.params.limit) > 0 ? req.params.limit : 10;
+    const offset = parseInt(req.params.offset) > 0 ? req.params.offset : 0
+
+    const urls = await Url.findAndCountAll({
+        limit,
+        offset,
+        order: [['created_at', 'DESC']]
+    });
+    res.json(urls);
+};
+
+/**
+ * Return the last created short urls
+ */
+exports.getTop = async (req, res, next) => {
     const urls = await Url.findAndCountAll({
         limit: 100,
+        order: [['created_at', 'DESC']]
     });
     res.json(urls);
 };

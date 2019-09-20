@@ -9,6 +9,8 @@ router.post('/api/urls', store);
 
 router.get('/api/urls', getList);
 
+router.get('/api/top-urls', getTop);
+
 router.get('/:hash', redirect);
 
 router.use('/', notFound);
