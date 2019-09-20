@@ -1,5 +1,9 @@
 ## Stanly's URL Shortener
 
+### GUI
+
+This API was created to be consumed by [Stanleys's URL Shortener](https://github.com/jrszapata/stanleys-url-shortener) app. After you setup this api go there and follow its guide.
+
 ### Setup
 
 Clone this repo and open the terminal in that directory and execute.
