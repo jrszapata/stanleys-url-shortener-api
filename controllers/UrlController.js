@@ -29,6 +29,8 @@ exports.store = async (req, res) => {
  * Return the last created short urls
  */
 exports.getList = async (req, res, next) => {
-    const urls = await Url.findAndCountAll();
+    const urls = await Url.findAndCountAll({
+        limit: 100,
+    });
     res.json(urls);
 };
