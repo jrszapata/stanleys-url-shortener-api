@@ -19,35 +19,52 @@ exports.store = async (req, res) => {
     } catch(e) {
         res.json({
             error: {
-                message: "Error creating the url"
+                message: "Error retrieving the data"
             },
         });
     }
 };
 
 /**
- * Return the last created short urls
+ * Return the short urls sorted by created_at
  */
 exports.getList = async (req, res, next) => {
+    try {
+        const limit = parseInt(req.params.limit) > 0 ? req.params.limit : 10;
+        const offset = parseInt(req.params.offset) > 0 ? req.params.offset : 0
 
-    const limit = parseInt(req.params.limit) > 0 ? req.params.limit : 10;
-    const offset = parseInt(req.params.offset) > 0 ? req.params.offset : 0
+        const urls = await Url.findAndCountAll({
+            limit,
+            offset,
+            order: [['createdAt', 'DESC']]
+        });
 
-    const urls = await Url.findAndCountAll({
-        limit,
-        offset,
-        order: [['created_at', 'DESC']]
-    });
-    res.json(urls);
+        res.json(urls);
+    } catch(e) {
+        res.json({
+            error: {
+                message: "Error retrieving the data"
+            },
+        });
+    }
 };
 
 /**
- * Return the last created short urls
+ * Return top 100 urls
  */
 exports.getTop = async (req, res, next) => {
-    const urls = await Url.findAndCountAll({
-        limit: 100,
-        order: [['created_at', 'DESC']]
-    });
-    res.json(urls);
+    try {
+        const urls = await Url.findAndCountAll({
+            limit: 100,
+            order: [['createdAt', 'DESC']]
+        });
+        res.json(urls);
+
+    } catch(e) {
+        res.json({
+            error: {
+                message: "Error retrieving the data"
+            },
+        });
+    }
 };
